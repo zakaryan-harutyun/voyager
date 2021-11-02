@@ -119,11 +119,10 @@
         <section class="hero">
             @if(isset($sliders))
             <div class="hero-bg" id="js-hero-bg">
-                <div><div class="hero-bg-slide"><img src="{{asset('img/pic/hero-3-min.jpg')}}" alt=""></div></div>
 
-                <div><div class="hero-bg-slide"><img src="{{asset('img/pic/hero-2-min.jpg')}}" alt=""></div></div>
-
-                <div><div class="hero-bg-slide"><img src="{{asset('img/pic/hero-1-min.jpg')}}" alt=""></div></div>
+                @foreach($sliders as $slider)
+                    <div><div class="hero-bg-slide"><img src="{{asset('img/pic/hero-3-min.jpg')}}" alt=""></div></div>
+                @endforeach
             </div>
             <div class="hero-particles-js hero-particles-js--left" id="js-particles-js-left"></div>
             <div class="hero-particles-js hero-particles-js--right" id="js-particles-js-right"></div>
