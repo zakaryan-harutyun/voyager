@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [App\Http\Controllers\MainController::class, 'index'])->name('index');
+Route::post('/send', [App\Http\Controllers\MainController::class, 'send'])->name('send');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();

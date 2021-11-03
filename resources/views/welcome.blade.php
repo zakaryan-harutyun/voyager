@@ -36,8 +36,8 @@
                 <div class="header__bar">
                     <button class="btn btn--secondary header-btn js-callback-btn">Связаться с нами</button>
                     <div class="header__contacts">
-                        <div><a href="mailto:info@rvts.ru">info@rvts.ru</a></div>
-                        <div><a href="tel:+74958990490">+7 (495) 899-04-90</a></div>
+                        <div><a href="mailto:{{setting('site.email')}}">{{setting('site.email')}}</a></div>
+                        <div><a href="tel:{{setting('site.phone')}}">{{setting('site.phone')}}</a></div>
                     </div>
                 </div>
                 <button class="btn burger header-burger js-mob-menu" title="Развернуть Меню">
@@ -82,7 +82,7 @@
                     <span></span>
                     <span></span>
                 </button>
-                <a href="tel:+74958990490" class="header-fix-tel">+7 (495) 899-04-90</a>
+                <a href="tel:+74958990490" class="header-fix-tel">{{setting('site.phone')}}</a>
                 <button class="btn burger header-burger js-mob-menu" title="Развернуть Меню">
                     <span></span>
                     <span></span>
@@ -108,8 +108,8 @@
             </ul>
         </ul>
         <div class="header__contacts">
-            <div><a href="mailto:info@rvts.ru">info@rvts.ru</a></div>
-            <div><a href="tel:+74958990490">+7 (495) 899-04-90</a></div>
+            <div><a href="mailto:{{setting('site.email')}}">{{setting('site.email')}}</a></div>
+            <div><a href="tel:+{{setting('site.phone')}}">{{setting('site.phone')}}</a></div>
         </div>
         <button class="btn btn--secondary-dark header-btn js-callback-btn">Связаться с нами</button>
     </nav>
@@ -121,7 +121,7 @@
             <div class="hero-bg" id="js-hero-bg">
 
                 @foreach($sliders as $slider)
-                    <div><div class="hero-bg-slide"><img src="{{asset('img/pic/hero-3-min.jpg')}}" alt=""></div></div>
+                    <div><div class="hero-bg-slide"><img src="{{$slider->image ?? asset('img/pic/hero-3-min.jpg')}}" alt=""></div></div>
                 @endforeach
             </div>
             <div class="hero-particles-js hero-particles-js--left" id="js-particles-js-left"></div>
@@ -134,8 +134,8 @@
                                     <div class="hero-slide__wrap">
                                         <div class="hero-slide__content">
                                             <h2 class="hero-slide__title">{{$slider->title}}</h2>
-                                            <p class="hero-slide__txt">{{$slider->description}}</p>
-                                            <button class="btn btn--revers hero-slide__btn js-order-btn">Узнать больше</button>
+                                            <p class="hero-slide__txt">{{$slider->line1}} <br> {{$slider->line2}} <br> {{$slider->line3}}</p>
+                                            <button class="btn btn--revers hero-slide__btn js-order-btn">{{$slider->button}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +191,7 @@
             <div class="container">
                 <h2 class="sec-title">О нас</h2>
                 <div class="sec-txt">
-                    <p>{{$main_settings['about_us']}}</p>
+                    <p>{{setting('site.about_us') ?? ''}}</p>
                 </div>
             </div>
         </section>
@@ -199,7 +199,7 @@
             <div class="container">
                 <h2 class="sec-title">Технологии, которые мы используем</h2>
                 <div class="sec-txt">
-                    <p>{{$main_settings['tech_section']}}</p>
+                    <p>{{setting('site.tech_section') ?? ''}}</p>
                 </div>
                 <div class="technologies__list">
                     <section class="technologies-item">
@@ -591,7 +591,7 @@
             <div class="container">
                 <h2 class="sec-title">Наша команда</h2>
                 <div class="sec-txt">
-                    <p>{!! $main_settings['our_team'] !!}</p>
+                    <p>{!! setting('site.our_team') ?? '' !!}</p>
                 </div>
             </div>
         </section>
@@ -599,9 +599,9 @@
             <div class="container">
                 <h2 class="sec-title">Контакты</h2>
                 <div class="contacts__wrap">
-                    <div class="contacts__item"><a href="tel:+74958990490">+7 (495) 899-04-90</a></div>
-                    <div class="contacts__item"><a href="mailto:info@rvts.ru">info@rvts.ru</a></div>
-                    <div class="contacts__item"><address>ул. Раевского д.4, пд.1, эт.2</address></div>
+                    <div class="contacts__item"><a href="tel:{{setting('site.phone')}}">{{setting('site.phone')}}</a></div>
+                    <div class="contacts__item"><a href="mailto:{{setting('site.email')}}">{{setting('site.email')}}</a></div>
+                    <div class="contacts__item"><address>{{setting('site.address')}}</address></div>
                 </div>
             </div>
             <div class="map" id="js-map"></div>
@@ -612,14 +612,14 @@
                 ymaps.ready(init);
                 function init() {
                     var map = new ymaps.Map('js-map', {
-                        center: [55.744647, 37.552157],
+                        center: [{{$coordinates[0]}}, {{$coordinates[1]}}],
                         zoom: 16,
                         controls: []
                     });
                     var myPlacemark = new ymaps.GeoObject({
                         geometry: {
                             type: "Point",
-                            coordinates: [55.744647, 37.552157]
+                            coordinates: [{{$coordinates[0]}}, {{$coordinates[1]}}]
                         }
                     });
                     map.geoObjects.add(myPlacemark);
@@ -647,8 +647,8 @@
                     </ul>
                 </div>
                 <div class="footer__contacts">
-                    <div><a href="mailto:info@rvts.ru">info@rvts.ru</a></div>
-                    <div><a href="tel:+74958990490">+7 (495) 899-04-90</a></div>
+                    <div><a href="mailto:{{setting('site.email')}}">{{setting('site.email')}}</a></div>
+                    <div><a href="tel:{{setting('site.phone')}}">setting('site.phone')</a></div>
                 </div>
                 <button class="btn btn--secondary-dark footer__btn js-callback-btn">Связаться с нами</button>
             </div>
@@ -664,10 +664,11 @@
                 <img src="{{asset('img/svg/close.svg')}}" alt="">
             </button>
             <h2 class="popup__title js-popup-title">Связаться с нами</h2>
-            <form action="php/mail.php" class="popup__form js-form-val">
+            <form action="{{route('send')}}" method="POST" class="popup__form js-form-val">
+                @csrf
                 <input hidden type="text" name="title" class="js-hide-input">
-                <input class="input" type="text" name="name" placeholder="Имя">
-                <input class="input js-val js-tel" type="tel" name="tel" placeholder="Телефон">
+                <input required class="input" type="text" name="name" placeholder="Имя">
+                <input required class="input js-val js-tel" type="tel" name="tel" placeholder="Телефон">
                 <button class="btn btn--primery popup__btn" type="submit">Отправить заявку</button>
                 <sub class="popup__sub">Нажимая на кнопку, вы даете согласие на обработку персональных данных и соглашаетесь c политикой конфиденциальности</sub>
             </form>
