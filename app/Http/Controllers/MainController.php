@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Decision;
 use App\Models\Mail;
-use App\Models\MainSetting;
+use App\Models\MailSetting;
 use App\Models\Slider;
+use App\Models\Vacantion;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -12,12 +14,15 @@ class MainController extends Controller
     public function index(){
 
         $sliders = Slider::all();
-        $main_settings = MainSetting::first();
 
         $coordinates = setting('site.coordinates');
         $coordinates = explode(',', $coordinates);
+        $vacantions = Vacantion::get();
+        $decisions = Decision::get()->toArray();
+        $decisions = array_chunk($decisions, 3);
 
-        return view('welcome', compact('sliders','main_settings','coordinates'));
+
+        return view('welcome', compact('sliders','coordinates','vacantions','decisions'));
     }
 
     public function send(Request $request){
@@ -34,9 +39,13 @@ class MainController extends Controller
             'tel' => $request->tel
         ]);
 
-        Mail::to('your_receiver_email@gmail.com')->send(new \App\Mail\MainMail($data));
+        $mails = MailSetting::get();
 
-        dd(1);
-        return redirect()->back();
+        foreach ($mails as $mail){
+            \Mail::to($mail->mail)->send(new \App\Mail\MainMail($data));
+        }
+
+
+        return response()->json(true);
     }
 }

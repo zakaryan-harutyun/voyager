@@ -27,6 +27,7 @@
     <meta name="twitter:creator" content="rvts.ru"/>
     <meta name="twitter:image:src" content="https://rvts.ru/img/og/twitter.jpg"/>
     <meta name="twitter:domain" content="https://rvts.ru/"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 <div class="wrapper"><header class="header">
@@ -121,7 +122,7 @@
             <div class="hero-bg" id="js-hero-bg">
 
                 @foreach($sliders as $slider)
-                    <div><div class="hero-bg-slide"><img src="{{$slider->image ?? asset('img/pic/hero-3-min.jpg')}}" alt=""></div></div>
+                    <div><div class="hero-bg-slide"><img src="{{'storage/'.$slider->image ?? asset('img/pic/hero-3-min.jpg')}}" alt=""></div></div>
                 @endforeach
             </div>
             <div class="hero-particles-js hero-particles-js--left" id="js-particles-js-left"></div>
@@ -191,7 +192,7 @@
             <div class="container">
                 <h2 class="sec-title">О нас</h2>
                 <div class="sec-txt">
-                    <p>{{setting('site.about_us') ?? ''}}</p>
+                    <p>{!! nl2br(setting('site.about_us')) ?? '' !!}</p>
                 </div>
             </div>
         </section>
@@ -199,7 +200,7 @@
             <div class="container">
                 <h2 class="sec-title">Технологии, которые мы используем</h2>
                 <div class="sec-txt">
-                    <p>{{setting('site.tech_section') ?? ''}}</p>
+                    <p>{!! nl2br(setting('site.tech_section')) ?? '' !!}</p>
                 </div>
                 <div class="technologies__list">
                     <section class="technologies-item">
@@ -242,242 +243,37 @@
             <div class="container">
                 <h2 class="sec-title">Готовые решения</h2>
                 <div class="decisions__wrap">
-                    <section class="decision">
-                        <div class="decision__pic"><img src="{{asset('img/pic/portfolio-1-min.jpg')}}" alt=""></div>
-                        <div class="decision__main">
-                            <h3 class="decision__title">Умный город</h3>
-                            <ul class="decision__linelist">
-                                <li>Комплексное цифровое решение;</li>
-                                <li>безопасность транспорта и грузоперевозок;</li>
-                                <li>умное освещение городов и дорог;</li>
-                                <li>умное  торговое оборудование.</li>
-                            </ul>
-                            <p>Применяют:</p>
-                            <ul class="decision__dotlist">
-                                <li>органы федеральной власти; </li>
-                                <li>районные и городские администрации;</li>
-                                <li>государственные корпорации;</li>
-                                <li>естественные монополии.</li>
-                            </ul>
-                            <div class="decision__footer">
-                                <button class="btn btn--primery decision__btn js-order-btn">Связаться с менеджером</button>
-                                <a href="" class="decision__download">
-                                    <!--   <span>Узнать подробнее</span> <span>PDF</span> -->
-                                </a>
-                            </div>
+                    @php $i = 1 @endphp
+                    @foreach($decisions as $key => $d)
+                        @if($key != 0)
+                        <div class="decisions__hide hided">
+                        @endif
+                            @foreach($d as $decision)
+                                <section class="decision">
+                                    <div class="decision__pic"><img src="{{asset('storage/'.$decision['image'])}}" alt=""></div>
+                                    <div class="decision__main">
+                                        <div>
+                                            {!! nl2br($decision['text']) !!}
+                                        </div>
+                                        <div class="decision__footer">
+                                            @if(empty($decision['button_link']))
+                                                <button class="btn btn--primery decision__btn js-order-btn">{{$decision['button_name']}}</button>
+                                            @else
+                                                <a class="btn btn--primery decision__btn" href="{{$decision['button_link']}}" target="_blank">{{$decision['button_name']}}</a>
+                                            @endif
+                                            @if(!empty($decision['pdf_link']))
+                                                    <a href="{{$decision['pdf_link']}}" target="_blank" class="decision__download">
+                                                        <span>Узнать подробнее</span><span>PDF</span>
+                                                    </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </section>
+                            @endforeach
+                        @if($key != 0)
                         </div>
-                    </section>
-                    <section class="decision">
-                        <div class="decision__pic"><img src="{{asset('img/pic/portfolio-2-min.jpg')}}" alt=""></div>
-                        <div class="decision__main">
-                            <h3 class="decision__title">Автоматизация контроля сбора мусора</h3>
-                            <ul class="decision__linelist">
-                                <li>Умный раздельный сбор мусора;</li>
-                                <li>отслеживание наполняемости контейнеров;</li>
-                                <li>оптимизация графика мусоросборщиков. </li>
-                            </ul>
-                            <p>Применяют:</p>
-                            <ul class="decision__dotlist">
-                                <li>органы федеральной и муниципальной власти; </li>
-                                <li>государственные корпорации;</li>
-                                <li>естественные монополии;</li>
-                                <li>производственные предприятия.</li>
-                            </ul>
-                            <div class="decision__footer">
-                                <button class="btn btn--primery decision__btn js-order-btn">Связаться с менеджером</button>
-                                <a href="" class="decision__download">
-                                    <!--   <span>Узнать подробнее</span> <span>PDF</span> -->
-                                </a>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="decision">
-                        <div class="decision__pic"><img src="{{asset('img/pic/portfolio-3-min.jpg')}}" alt=""></div>
-                        <div class="decision__main">
-                            <h3 class="decision__title">RVTS Cloud</h3>
-                            <ul class="decision__linelist">
-                                <li>Умные приборы интеллектуального учета ресурсов;</li>
-                                <li>продвинутая система диспетчеризации.</li>
-                            </ul>
-                            <p>Применяют:</p>
-                            <ul class="decision__dotlist">
-                                <li>управляющие компании;</li>
-                                <li>водоканалы, тепло- и  электросети;</li>
-                                <li>поставщики энергоресурсов.</li>
-                            </ul>
-                            <div class="decision__footer">
-                                <a class="btn btn--primery decision__btn" href="https://rvts.cloud/#/auth/login" target="_blank">Вход в систему</a>
-                                <a href="/pdf/RVTS-Cloud.pdf" target="_blank" class="decision__download">
-                                    <span>Узнать подробнее</span><span>PDF</span>
-                                </a>
-                            </div>
-                        </div>
-                    </section>
-                    <div class="decisions__hide hided">
-                        <section class="decision">
-                            <div class="decision__pic"><img src="{{asset('img/pic/portfolio-4-min.jpg')}}" alt=""></div>
-                            <div class="decision__main">
-                                <h3 class="decision__title">Автоматизация контроля и учёта электроэнергии</h3>
-                                <ul class="decision__linelist">
-                                    <li>Беспроводная связь;</li>
-                                    <li>Одномоментный сбор показаний с узлов учёта;</li>
-                                    <li>Мониторинг нештатных и аварийных ситуаций.</li>
-                                </ul>
-                                <p>Применяют:</p>
-                                <ul class="decision__dotlist">
-                                    <li>энергоснабжающие организации;</li>
-                                    <li>электросети;</li>
-                                    <li>СНТ и коттеджные поселки;</li>
-                                    <li>многоквартирные дома.</li>
-                                </ul>
-                                <div class="decision__footer">
-                                    <button class="btn btn--primery decision__btn js-order-btn">Связаться с менеджером</button>
-                                    <a href="" class="decision__download">
-                                        <!--   <span>Узнать подробнее</span> <span>PDF</span> -->
-                                    </a>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="decision">
-                            <div class="decision__pic"><img src="{{asset('img/pic/portfolio-5-min.jpg')}}" alt=""></div>
-                            <div class="decision__main">
-                                <h3 class="decision__title">Точный расчёт потери электроэнергии</h3>
-                                <ul class="decision__linelist">
-                                    <li>Программное решение;</li>
-                                    <li>Расчёт технических, коммерческих и абсолютных потерь;</li>
-                                    <li>Мониторинг нештатных и аварийных ситуаций.</li>
-                                </ul>
-                                <p>Применяют:</p>
-                                <ul class="decision__dotlist">
-                                    <li>энергоснабжающие организации;</li>
-                                    <li>промышленные предприятия.</li>
-                                </ul>
-                                <div class="decision__footer">
-                                    <button class="btn btn--primery decision__btn js-order-btn">Связаться с менеджером</button>
-                                    <a href="" class="decision__download">
-                                        <!--   <span>Узнать подробнее</span> <span>PDF</span> -->
-                                    </a>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="decision">
-                            <div class="decision__pic"><img src="{{asset('img/pic/portfolio-6-min.jpg')}}" alt=""></div>
-                            <div class="decision__main">
-                                <h3 class="decision__title">Цифровизация подстанций</h3>
-                                <ul class="decision__linelist">
-                                    <li>Комплексное цифровое решение;</li>
-                                    <li>Телеизмерение параметров сети и телесигнализации.</li>
-                                </ul>
-                                <p>Применяют:</p>
-                                <ul class="decision__dotlist">
-                                    <li>энергоснабжающие организации;</li>
-                                    <li>промышленные предприятия.</li>
-                                </ul>
-                                <div class="decision__footer">
-                                    <button class="btn btn--primery decision__btn js-order-btn">Связаться с менеджером</button>
-                                    <a href="" class="decision__download">
-                                        <!--   <span>Узнать подробнее</span> <span>PDF</span> -->
-                                    </a>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="decisions__hide hided">
-                        <section class="decision">
-                            <div class="decision__pic"><img src="{{asset('img/pic/portfolio-7-min.jpg')}}" alt=""></div>
-                            <div class="decision__main">
-                                <h3 class="decision__title">Автоматизация контроля и учёта водоснабжения</h3>
-                                <ul class="decision__linelist">
-                                    <li>Беспроводная связь;</li>
-                                    <li>Одномоментный сбор показаний с узлов учёта;</li>
-                                    <li>Мониторинг нештатных и аварийных ситуаций.</li>
-                                </ul>
-                                <p>Применяют:</p>
-                                <ul class="decision__dotlist">
-                                    <li>водоканалы;</li>
-                                    <li>обслуживающие организации;</li>
-                                    <li>СНТ и коттеджные поселки;</li>
-                                    <li>многоквартирные дома.</li>
-                                </ul>
-                                <div class="decision__footer">
-                                    <button class="btn btn--primery decision__btn js-order-btn">Связаться с менеджером</button>
-                                    <a href="" class="decision__download">
-                                        <!--   <span>Узнать подробнее</span> <span>PDF</span> -->
-                                    </a>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="decision">
-                            <div class="decision__pic"><img src="{{asset('img/pic/portfolio-8-min.jpg')}}" alt=""></div>
-                            <div class="decision__main">
-                                <h3 class="decision__title">Автоматизация контроля и учёта газа</h3>
-                                <ul class="decision__linelist">
-                                    <li>Беспроводная связь;</li>
-                                    <li>Одномоментный сбор показаний с узлов учёта;</li>
-                                    <li>Мониторинг нештатных и аварийных ситуаций.</li>
-                                </ul>
-                                <p>Применяют:</p>
-                                <ul class="decision__dotlist">
-                                    <li>обслуживающие организации;</li>
-                                    <li>СНТ и коттеджные поселки;</li>
-                                    <li>многоквартирные дома.</li>
-                                </ul>
-                                <div class="decision__footer">
-                                    <button class="btn btn--primery decision__btn js-order-btn">Связаться с менеджером</button>
-                                    <a href="" class="decision__download">
-                                        <!--   <span>Узнать подробнее</span> <span>PDF</span> -->
-                                    </a>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="decision">
-                            <div class="decision__pic"><img src="{{asset('img/pic/portfolio-9-min.jpg')}}" alt=""></div>
-                            <div class="decision__main">
-                                <h3 class="decision__title">Автоматизация контроля и учёта тепла</h3>
-                                <ul class="decision__linelist">
-                                    <li>Беспроводная связь;</li>
-                                    <li>Одномоментный сбор показаний с узлов учёта;</li>
-                                    <li>Мониторинг нештатных и аварийных ситуаций.</li>
-                                </ul>
-                                <p>Применяют:</p>
-                                <ul class="decision__dotlist">
-                                    <li>обслуживающие организации;</li>
-                                    <li>СНТ и коттеджные поселки;</li>
-                                    <li>многоквартирные дома.</li>
-                                </ul>
-                                <div class="decision__footer">
-                                    <button class="btn btn--primery decision__btn js-order-btn">Связаться с менеджером</button>
-                                    <a href="" class="decision__download">
-                                        <!--   <span>Узнать подробнее</span> <span>PDF</span> -->
-                                    </a>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="decision">
-                            <div class="decision__pic"><img src="{{asset('img/pic/portfolio-10-min.jpg')}}" alt=""></div>
-                            <div class="decision__main">
-                                <h3 class="decision__title">Учёт коммунальных ресурсов</h3>
-                                <ul class="decision__linelist">
-                                    <li>Беспроводная связь;</li>
-                                    <li>Комплексное цифровое решение.</li>
-                                </ul>
-                                <p>Применяют:</p>
-                                <ul class="decision__dotlist">
-                                    <li>управляющие компании;</li>
-                                    <li>водоканалы, тепло- и электросети;</li>
-                                    <li>СНТ и коттеджные поселки;</li>
-                                    <li>многоквартирные дома;</li>
-                                    <li>поставщики энергоресурсов.</li>
-                                </ul>
-                                <div class="decision__footer">
-                                    <button class="btn btn--primery decision__btn js-order-btn">Связаться с менеджером</button>
-                                    <a href="" class="decision__download">
-                                        <!--   <span>Узнать подробнее</span> <span>PDF</span> -->
-                                    </a>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
+                        @endif
+                    @endforeach
                 </div>
                 <div class="decisions__footer">
                     <button class="btn btn--secondary-blue js-show-more">Еще решения</button>
@@ -529,25 +325,23 @@
                         <img src="{{asset('img/svg/logo-grey.svg')}}" alt="НПК РВТС">
                     </div>
                     <div class="openings-top__main">
-                        <p>Требования к опыту работы  – не менее 3 лет.</p>
+                      {{--  <p>Требования к опыту работы  – не менее 3 лет.</p>
                         <p>Условия:</p>
                         <ul>
                             <li>офисные и удаленные рабочие места;</li>
                             <li>оформление по ТД или по договору ГПХ; </li>
                             <li>возможность заключения ДП для самозанятых и профильных ИП.</li>
-                        </ul>
+                        </ul>--}}
+                        {!! nl2br(setting('site.vacantion_title')) !!}
                     </div>
                 </div>
                 <div class="openings__wrap">
                     <section class="openings-item">
                         <div class="openings-item__pic"><img src="{{asset('img/pic/vak-1-min.jpg')}}" alt=""></div>
                         <div class="openings-item__main">
-                            <ul>
-                                <li>схемотехники; </li>
-                                <li>радиоинженеры; </li>
-                                <li>электрики и электронщики;</li>
-                                <li>монтажники.</li>
-                            </ul>
+                          <div>
+                              {!! nl2br($vacantions[0]['text']) !!}
+                          </div>
                         </div>
                         <div class="openings-item__footer">
                             <button class="btn btn--primery openings-item__btn js-order-btn">Подать заявку</button>
@@ -557,13 +351,7 @@
                     <section class="openings-item">
                         <div class="openings-item__pic"><img src="{{asset('img/pic/vak-2-min.jpg')}}" alt=""></div>
                         <div class="openings-item__main">
-                            <ul>
-                                <li>программисты;</li>
-                                <li>проектировщики;</li>
-                                <li>веб-дизайнеры;</li>
-                                <li>постановщики задач; </li>
-                                <li>технические писатели.</li>
-                            </ul>
+                           <div> {!! nl2br($vacantions[1]['text']) !!}</div>
                         </div>
                         <div class="openings-item__footer">
                             <button class="btn btn--primery openings-item__btn js-order-btn">Подать заявку</button>
@@ -573,12 +361,9 @@
                     <section class="openings-item">
                         <div class="openings-item__pic"><img src="{{asset('img/pic/vak-3-min.jpg')}}" alt=""></div>
                         <div class="openings-item__main">
-                            <ul>
-                                <li>проект-менеджеры; </li>
-                                <li>продукт-менеджеры; </li>
-                                <li>закупщики; </li>
-                                <li>менеджеры по продажам.</li>
-                            </ul>
+                         <div>
+                             {!! nl2br($vacantions[2]['text']) !!}
+                         </div>
                         </div>
                         <div class="openings-item__footer">
                             <button class="btn btn--primery openings-item__btn js-order-btn">Подать заявку</button>
@@ -591,7 +376,7 @@
             <div class="container">
                 <h2 class="sec-title">Наша команда</h2>
                 <div class="sec-txt">
-                    <p>{!! setting('site.our_team') ?? '' !!}</p>
+                    <p>{!! nl2br(setting('site.our_team')) ?? '' !!}</p>
                 </div>
             </div>
         </section>

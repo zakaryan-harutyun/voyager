@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ItsolutionStuff.com</title>
+    <title>rvts.ru</title>
 </head>
 <body>
-<h1>{{ $details['title'] }}</h1>
-<p>{{ $details['name'] }}</p>
-<p>{{ $details['phone'] }}</p>
+<h2>Title: {{ $details['title'] }}</h2>
+<p>Name: {{ $details['name'] }}</p>
+<p>Phone: {{ $details['tel'] }}</p>
 
 </body>
 </html>
